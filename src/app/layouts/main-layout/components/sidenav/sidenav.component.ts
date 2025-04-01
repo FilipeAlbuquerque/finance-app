@@ -1,7 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { environment } from '../../../../environments/environment';
-import {MatIcon} from '@angular/material/icon';
 
 interface NavItem {
   label: string;
@@ -12,15 +14,18 @@ interface NavItem {
 
 @Component({
   selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
+  standalone: true,
   imports: [
-    MatIcon
+    CommonModule,
+    RouterModule,
+    MatListModule,
+    MatIconModule
   ],
+  templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent implements OnInit {
   @Output() navItemClicked = new EventEmitter<void>();
-  appName = environment.appName;
   username = '';
 
   navItems: NavItem[] = [
@@ -50,11 +55,10 @@ export class SidenavComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.username = user.username;
-      }
-    });
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      this.username = currentUser.username;
+    }
   }
 
   canShow(navItem: NavItem): boolean {

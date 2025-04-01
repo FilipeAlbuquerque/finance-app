@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 import {
   AuthRequest,
   AuthResponse,
@@ -21,12 +22,21 @@ export class AuthService {
 
   private tokenKey = 'auth_token';
   private userKey = 'user_data';
+  private isBrowser: boolean;
 
-  constructor(private http: HttpClient) {
-    this.loadStoredUser();
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    if (this.isBrowser) {
+      this.loadStoredUser();
+    }
   }
 
   private loadStoredUser(): void {
+    if (!this.isBrowser) return;
+
     const storedToken = localStorage.getItem(this.tokenKey);
     const storedUser = localStorage.getItem(this.userKey);
 
@@ -57,8 +67,10 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.userKey);
+    if (this.isBrowser) {
+      localStorage.removeItem(this.tokenKey);
+      localStorage.removeItem(this.userKey);
+    }
     this.currentUserSubject.next(null);
   }
 
@@ -75,6 +87,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
+    if (!this.isBrowser) return null;
     return localStorage.getItem(this.tokenKey);
   }
 
@@ -88,12 +101,16 @@ export class AuthService {
   }
 
   private storeUserData(response: AuthResponse): void {
+    if (!this.isBrowser) return;
+
     if (response && response.token) {
       localStorage.setItem(this.tokenKey, response.token);
 
-      // Create a new object without the token property
-      const { token, ...userDataWithoutToken } = response;
-      localStorage.setItem(this.userKey, JSON.stringify(userDataWithoutToken));
+      // Store user data without token for security
+      // Usando uma cópia para evitar o erro TS2790
+      const userToStore = { ...response } as Partial<AuthResponse>;
+      userToStore.token = undefined; // Usar undefined em vez de delete
+      localStorage.setItem(this.userKey, JSON.stringify(userToStore));
 
       this.currentUserSubject.next(response);
     }
