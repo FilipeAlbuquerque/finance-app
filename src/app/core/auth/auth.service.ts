@@ -54,7 +54,15 @@ export class AuthService {
   login(credentials: AuthRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials)
     .pipe(
-      tap(response => this.storeUserData(response)),
+      tap(response => {
+        // Verificar se a resposta está no formato esperado
+        if (typeof response === 'object' && response.hasOwnProperty('token')) {
+          this.storeUserData(response as AuthResponse);
+        } else {
+          console.error('Resposta inesperada do servidor:', response);
+          throw new Error('Formato de resposta inválido');
+        }
+      }),
       catchError(error => {
         console.error('Login failed', error);
         throw error;
@@ -106,11 +114,8 @@ export class AuthService {
     if (response && response.token) {
       localStorage.setItem(this.tokenKey, response.token);
 
-      // Store user data without token for security
-      // Usando uma cópia para evitar o erro TS2790
-      const userToStore = { ...response } as Partial<AuthResponse>;
-      userToStore.token = undefined; // Usar undefined em vez de delete
-      localStorage.setItem(this.userKey, JSON.stringify(userToStore));
+      const { token, ...userWithoutToken } = response;
+      localStorage.setItem(this.userKey, JSON.stringify(userWithoutToken));
 
       this.currentUserSubject.next(response);
     }

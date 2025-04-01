@@ -45,14 +45,20 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/dashboard']);
     }
 
-    // Inicialize o formulário
+    // Inicialize o formulário - removed minLength validator
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required]]
     });
 
     // Obtenha a URL de retorno dos parâmetros da query ou use o padrão
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+
+    // Verificar se o usuário veio da tela de registro
+    const registered = this.route.snapshot.queryParams['registered'];
+    if (registered === 'true') {
+      // Poderia mostrar uma mensagem de sucesso aqui
+    }
   }
 
   // Getter para facilitar o acesso aos campos do formulário
@@ -75,7 +81,14 @@ export class LoginComponent implements OnInit {
         this.router.navigate([this.returnUrl]);
       },
       error: (error) => {
-        this.errorMessage = error.error || 'Falha na autenticação. Verifique suas credenciais.';
+        // O backend retorna mensagens específicas para diferentes situações
+        if (error.status === 401) {
+          this.errorMessage = 'Credenciais inválidas. Verifique seu usuário e senha.';
+        } else if (error.status === 429) {
+          this.errorMessage = 'Conta temporariamente bloqueada devido a múltiplas tentativas de login falhas.';
+        } else {
+          this.errorMessage = error.message || 'Falha na autenticação. Tente novamente mais tarde.';
+        }
         this.loading = false;
       }
     });

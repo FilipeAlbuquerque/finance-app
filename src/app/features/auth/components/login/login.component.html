@@ -14,7 +14,8 @@
         matInput
         formControlName="username"
         placeholder="Digite seu nome de usuário"
-        autocomplete="username">
+        autocomplete="username"
+        type="text">
       <mat-icon matPrefix>person</mat-icon>
       <mat-error *ngIf="f['username'].errors?.['required']">
         Usuário é obrigatório
@@ -28,7 +29,8 @@
         matInput
         [type]="hidePassword ? 'password' : 'text'"
         formControlName="password"
-        autocomplete="current-password">
+        autocomplete="current-password"
+        type="password">
       <mat-icon matPrefix>lock</mat-icon>
       <button
         type="button"
@@ -39,9 +41,6 @@
       </button>
       <mat-error *ngIf="f['password'].errors?.['required']">
         Senha é obrigatória
-      </mat-error>
-      <mat-error *ngIf="f['password'].errors?.['minlength']">
-        Senha deve ter pelo menos 6 caracteres
       </mat-error>
     </mat-form-field>
 

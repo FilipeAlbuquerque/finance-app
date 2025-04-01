@@ -34,3 +34,13 @@ export interface UserProfileUpdate {
   lastName: string;
   email: string;
 }
+
+export interface ErrorResponse {
+  status: number;
+  message: string;
+  timestamp: string;
+}
+
+export interface ValidationErrorResponse extends ErrorResponse {
+  errors: {[key: string]: string};
+}
