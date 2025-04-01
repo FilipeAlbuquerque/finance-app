@@ -1,0 +1,34 @@
+<div class="dashboard-container">
+  <div class="welcome-section">
+    <h1>Bem-vindo ao Finance Service, {{ username }}!</h1>
+    <p>Seu dashboard financeiro está pronto para uso.</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <!-- Card principal -->
+    <mat-card class="dashboard-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>dashboard</mat-icon>
+        <mat-card-title>Finance Service</mat-card-title>
+        <mat-card-subtitle>Sistema financeiro completo</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Esta é uma demonstração inicial do dashboard do Finance Service.
+          Aqui você terá acesso a todas as funcionalidades do sistema:
+        </p>
+        <ul>
+          <li>Gerenciamento de contas</li>
+          <li>Transações financeiras</li>
+          <li>Extratos e relatórios</li>
+          <li>Transferências e pagamentos</li>
+          <li *ngIf="isAdmin">Administração de usuários e clientes</li>
+        </ul>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary">EXPLORAR</button>
+        <button mat-button color="accent">SAIBA MAIS</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

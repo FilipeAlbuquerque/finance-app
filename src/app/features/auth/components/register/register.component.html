@@ -1,0 +1,121 @@
+<div class="register-container">
+  <h2>Cadastre-se</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Mensagem de erro -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Campo de usuário -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Usuário</mat-label>
+      <input
+        matInput
+        formControlName="username"
+        placeholder="Escolha um nome de usuário"
+        autocomplete="username">
+      <mat-icon matPrefix>person</mat-icon>
+      <mat-error *ngIf="f['username'].errors?.['required']">
+        Usuário é obrigatório
+      </mat-error>
+      <mat-error *ngIf="f['username'].errors?.['minlength']">
+        Usuário deve ter pelo menos 3 caracteres
+      </mat-error>
+      <mat-error *ngIf="f['username'].errors?.['maxlength']">
+        Usuário deve ter no máximo 20 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Campo de email -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        formControlName="email"
+        placeholder="Digite seu email"
+        autocomplete="email">
+      <mat-icon matPrefix>email</mat-icon>
+      <mat-error *ngIf="f['email'].errors?.['required']">
+        Email é obrigatório
+      </mat-error>
+      <mat-error *ngIf="f['email'].errors?.['email']">
+        Formato de email inválido
+      </mat-error>
+      <mat-error *ngIf="f['email'].errors?.['maxlength']">
+        Email deve ter no máximo 50 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Campo de senha -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Senha</mat-label>
+      <input
+        matInput
+        [type]="hidePassword ? 'password' : 'text'"
+        formControlName="password"
+        autocomplete="new-password">
+      <mat-icon matPrefix>lock</mat-icon>
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="f['password'].errors?.['required']">
+        Senha é obrigatória
+      </mat-error>
+      <mat-error *ngIf="f['password'].errors?.['minlength']">
+        Senha deve ter pelo menos 6 caracteres
+      </mat-error>
+      <mat-error *ngIf="f['password'].errors?.['maxlength']">
+        Senha deve ter no máximo 40 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Campos opcionais -->
+    <div class="personal-info">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Nome</mat-label>
+        <input
+          matInput
+          formControlName="firstName"
+          placeholder="Digite seu nome"
+          autocomplete="given-name">
+        <mat-error *ngIf="f['firstName'].errors?.['maxlength']">
+          Nome deve ter no máximo 50 caracteres
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Sobrenome</mat-label>
+        <input
+          matInput
+          formControlName="lastName"
+          placeholder="Digite seu sobrenome"
+          autocomplete="family-name">
+        <mat-error *ngIf="f['lastName'].errors?.['maxlength']">
+          Sobrenome deve ter no máximo 50 caracteres
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Botão de registro -->
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      class="full-width register-button"
+      [disabled]="registerForm.invalid || loading">
+      <mat-spinner *ngIf="loading" diameter="24" class="spinner"></mat-spinner>
+      <span *ngIf="!loading">Cadastrar</span>
+    </button>
+
+    <!-- Link para login -->
+    <div class="links">
+      <span>Já tem uma conta?</span>
+      <a routerLink="/auth/login">Faça login</a>
+    </div>
+  </form>
+</div>

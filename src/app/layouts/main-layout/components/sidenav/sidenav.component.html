@@ -1,0 +1,25 @@
+<div class="sidenav-container">
+  <div class="sidenav-header">
+    <div class="logo">
+      <mat-icon>account_balance</mat-icon>
+      <h2>{{ appName }}</h2>
+    </div>
+    <div class="user-info">
+      <mat-icon>person</mat-icon>
+      <span>{{ username }}</span>
+    </div>
+  </div>
+
+  <mat-nav-list class="sidenav-nav">
+    <ng-container *ngFor="let item of navItems">
+      <a mat-list-item
+         *ngIf="canShow(item)"
+         [routerLink]="item.route"
+         routerLinkActive="active-link"
+         (click)="onNavItemClick()">
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+      </a>
+    </ng-container>
+  </mat-nav-list>
+</div>

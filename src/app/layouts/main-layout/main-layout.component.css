@@ -1,0 +1,21 @@
+.sidenav-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .sidenav {
+    width: 250px;
+  }
+
+  .content {
+    padding: 20px;
+    min-height: calc(100vh - 64px - 56px); /* Altura total - altura do header - altura do footer */
+  }
+}
+
+@media (max-width: 599px) {
+  .content {
+    min-height: calc(100vh - 56px - 56px); /* Ajuste para a altura do header no mobile */
+    padding: 16px;
+  }
+}

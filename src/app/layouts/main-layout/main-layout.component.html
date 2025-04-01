@@ -1,0 +1,23 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Sidenav -->
+  <mat-sidenav #sidenav mode="over"
+               [fixedInViewport]="true"
+               [opened]="(isHandset$ | async) === false"
+               class="sidenav">
+    <app-sidenav (navItemClicked)="closeSidenav()"></app-sidenav>
+  </mat-sidenav>
+
+  <!-- Main content -->
+  <mat-sidenav-content>
+    <!-- Header toolbar -->
+    <app-header (menuToggled)="toggleSidenav()"></app-header>
+
+    <!-- Page content -->
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+
+    <!-- Footer -->
+    <app-footer></app-footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

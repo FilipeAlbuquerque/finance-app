@@ -3,10 +3,10 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
-// Importe as rotas corretamente
-import { routes } from './app-routing.module';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { errorInterceptor } from './core/interceptors/error.interceptor';
+// Importe as rotas do arquivo correto
+import { routes } from './src/app/app.config';
+import { authInterceptor } from './src/app/core/interceptors/auth.interceptor';
+import { errorInterceptor } from './src/app/core/interceptors/error.interceptor';
 
 // Material modules
 import { MatToolbarModule } from '@angular/material/toolbar';

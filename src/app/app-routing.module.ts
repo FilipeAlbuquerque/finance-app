@@ -20,7 +20,7 @@ export const routes: Routes = [
   //   path: 'clients',
   //   loadChildren: () => import('./features/clients/clients.module').then(m => m.ClientsModule),
   //   canActivate: [AuthGuard],
-  //   data: { roles: ['ROLE_ADMIN'] }
+  //   data: {roles: ['ROLE_ADMIN']}
   // },
   // {
   //   path: 'transactions',
@@ -46,3 +46,13 @@ export const routes: Routes = [
     redirectTo: 'dashboard'
   }
 ];
+
+// Mantenha isso para compatibilidade temporária, caso ainda seja necessário
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}

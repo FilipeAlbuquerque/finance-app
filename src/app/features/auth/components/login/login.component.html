@@ -1,0 +1,66 @@
+<div class="login-container">
+  <h2>Login</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <!-- Mensagem de erro -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Campo de usuário -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Usuário</mat-label>
+      <input
+        matInput
+        formControlName="username"
+        placeholder="Digite seu nome de usuário"
+        autocomplete="username">
+      <mat-icon matPrefix>person</mat-icon>
+      <mat-error *ngIf="f['username'].errors?.['required']">
+        Usuário é obrigatório
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Campo de senha -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Senha</mat-label>
+      <input
+        matInput
+        [type]="hidePassword ? 'password' : 'text'"
+        formControlName="password"
+        autocomplete="current-password">
+      <mat-icon matPrefix>lock</mat-icon>
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="f['password'].errors?.['required']">
+        Senha é obrigatória
+      </mat-error>
+      <mat-error *ngIf="f['password'].errors?.['minlength']">
+        Senha deve ter pelo menos 6 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Botão de login -->
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      class="full-width login-button"
+      [disabled]="loginForm.invalid || loading">
+      <mat-spinner *ngIf="loading" diameter="24" class="spinner"></mat-spinner>
+      <span *ngIf="!loading">Entrar</span>
+    </button>
+
+    <!-- Links -->
+    <div class="links">
+      <a routerLink="/auth/forgot-password">Esqueci minha senha</a>
+      <span class="separator">|</span>
+      <a routerLink="/auth/register">Criar conta</a>
+    </div>
+  </form>
+</div>

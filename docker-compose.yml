@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: finance-frontend
+    ports:
+      - "80:80"
+    networks:
+      - finance-network
+    restart: unless-stopped
+    # Esta seção permite que o frontend se comunique com o backend caso ambos estejam na mesma rede
+    extra_hosts:
+      - "finance-service:host-gateway"
+
+networks:
+  finance-network:
+    name: finance-network
+    # Usando external: true para poder se conectar à mesma rede do backend
+    external: true
